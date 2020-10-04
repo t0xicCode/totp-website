@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>TOTP Website</title>
+  <style>
+    /* reset */
+    html {
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+
+    body, h1, h2, h3, h4, h5, h6, p, ol, ul {
+      margin: 0;
+      padding: 0;
+      font-weight: normal;
+    }
+
+    ol, ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* actual */
+    .container {
+      max-width: 1120px; /* 70rem */
+      margin: auto;
+      padding-top: 1rem;
+    }
+
+    .msgs {
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+
+    ul.flashes {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    ul.flashes li {
+      padding: 0.75rem 1.25rem;
+      border: 1px solid;
+      margin-bottom: 0.75rem;
+    }
+
+    ul.flashes li.success {
+      color: #155724;
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+
+    ul.flashes li.error {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+
+    ul.flashes li.info, ul.flashes li.messages {
+      color: #004085;
+      background-color: #cce5ff;
+      border-color: #b8daff;
+    }
+
+    .muted {
+      color: #333333;
+    }
+
+    .focus {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    .token {
+      border: 1px solid transparent;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+      margin-bottom: 1rem;
+    }
+
+    .token::after {
+      content: "";
+      display: block;
+      clear: both;
+    }
+
+    .token-header {
+      background-color: #f5f5f5;
+      padding: .5rem .75rem;
+    }
+
+    .token-body {
+      float: left;
+      padding: .75rem;
+    }
+
+    .token-time {
+      float: right;
+      padding: .75rem;
+    }
+
+    form {
+      padding: 0.5rem 0;
+    }
+
+    form span {
+      display: block;
+      padding-bottom: 0.25rem;
+    }
+
+    form input[type=text] {
+      font-size: 16px;
+      min-width: 20rem;
+    }
+
+    form .submit {
+      display: block;
+      padding: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  {# messages #}
+  <div class="msgs">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  {# List Tokens #}
+  <div id="token-list">
+    {% if tokens %}
+      {% for token in tokens %}
+        {% with token_tuple = token.now_remaining() %}
+        <div class="token">
+          <div class="token-header">{{ token.issuer }}</div>
+          <div class="token-body"><span class="muted">{{ token.name }}: </span> <span class="focus">{{ token_tuple.0 }}</span></div>
+          <div class="token-time">{{ token_tuple.1|int }}</div>
+        </div>
+        {% endwith %}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  {# Add a Token #}
+  <div id="token-add">
+    <form id="token-add-form" action="{{ url_for('token_add') }}" method="post">
+      <span><label for="token-add-uri">Token URL</label>: <input type="text" name="uri" id="token-add-uri"></span>
+      <input type="submit" name="submit" class="submit" value="Add Token">
+    </form>
+  </div>
+</div>
+</body>
+</html>

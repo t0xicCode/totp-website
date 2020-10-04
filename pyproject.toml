@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "totp-website"
+version = "0.1.0"
+description = ""
+authors = ["t0xicCode <xavier.l@magnax.ca>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+Flask = "^1.1.2"
+pyotp = "^2.4.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
