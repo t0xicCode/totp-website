@@ -149,6 +149,7 @@
           <div class="token-header">{{ token.issuer }}</div>
           <div class="token-body"><span class="muted">{{ token.name }}: </span> <span class="focus">{{ token_tuple.0 }}</span></div>
           <div class="token-time">{{ token_tuple.1|int }}</div>
+          <div class="token-close">X</div>
         </div>
         {% endwith %}
       {% endfor %}

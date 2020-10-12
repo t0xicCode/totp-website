@@ -1,3 +1,7 @@
+[tool.black]
+line-length = 132
+target-version = ['py37']
+
 [tool.poetry]
 name = "totp-website"
 version = "0.1.0"
@@ -11,6 +15,7 @@ Flask = "^1.1.2"
 pyotp = "^2.4.0"
 
 [tool.poetry.dev-dependencies]
+black = {version = "^20.8b1", allow-prereleases = true}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
